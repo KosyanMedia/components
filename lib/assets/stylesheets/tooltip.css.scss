@@ -1,0 +1,31 @@
+.as_tooltip {
+  position: absolute;
+  z-index: 99;
+  display: none;
+  border-radius: 10px;
+
+  &.on {
+    display: block;
+  }
+}
+
+.as_tooltip_close {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  right: -10px;
+  top: -10px;
+  cursor: pointer;
+  background-image: image-url('aviaforce-icons/close.png');
+}
+
+.as_tooltip_arrow {
+  position: absolute;
+  z-index: 1000;
+  top: -7px;
+  left: 50%;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid #243A3F;
+  margin: 0 auto;
+}
