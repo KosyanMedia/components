@@ -1,6 +1,6 @@
 # Components
 
-TODO: Write a gem description
+Aviasales/Jetradar team ui widgets used in our public projects.
 
 ## Installation
 
@@ -18,7 +18,17 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Require in your project necessary widgets and Components module.
+
+## Testing
+
+Run dummy application:
+
+    $ cd dummy && rails s
+
+Open in browser:
+
+    $ http://localhost:3000/jasmine
 
 ## Contributing
 
