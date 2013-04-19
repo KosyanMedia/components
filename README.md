@@ -22,13 +22,7 @@ Require in your project necessary widgets and Components module.
 
 ## Testing
 
-Run dummy application:
-
-    $ cd spec/dummy && rails s
-
-Open in browser:
-
-    $ http://localhost:3000/jasmine
+    $ karma start karma.conf.js
 
 ## Contributing
 
