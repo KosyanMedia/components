@@ -24,7 +24,7 @@ Require in your project necessary widgets and Components module.
 
 Run dummy application:
 
-    $ cd dummy && rails s
+    $ cd spec/dummy && rails s
 
 Open in browser:
 
