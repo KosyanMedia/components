@@ -9,14 +9,26 @@
         position: fixed;
         display: none;
       }
-
       .as_autocomplete_results.on {
          display: block;
       }
+      .as_autocomplete_results li:hover {
+         background-color: dodgerblue;
+      }
+      .blue {
+        background-color: dodgerblue;
+      }
     </style>
   <div ng-app="Autocomplete" style="position: fixed; top: 200px; left: 300px;">
-    <as-autocomplete min-length="3">
-      <input type="text" name="autocomplete" placeholder="Enter something" ng-model="searchTerm" focused="focused" selected_item="selected_item"/>
+    <as-autocomplete min-length="3" displayed-attr="title">
+      <ul class="as_autocomplete_results" ng-class="{on: focused && results}">
+        <li ng-repeat="result in results" ng-click="result_selected(result)" ng-class="{blue: is_selected(result)}">
+          {{result.name}} {{result.city_name}}
+        </li>
+      </ul>
+      <input type="text" placeholder="Enter something" ng-model="searchTerm" ng-value="selected_result.label" focused="focused"/>
+      <input type="text" ng-model="selected_result.code" disabled="true"/>
+
     </as-autocomplete>
   </div>
 </body>
