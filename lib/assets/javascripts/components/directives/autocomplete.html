@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>asAutocomplete</title>
+</head>
+<body>
+<style type="text/css">
+      .as_autocomplete_results {
+        position: fixed;
+        display: none;
+      }
+
+      .as_autocomplete_results.on {
+         display: block;
+      }
+    </style>
+  <div ng-app="Autocomplete" style="position: fixed; top: 200px; left: 300px;">
+    <as-autocomplete min-length="3">
+      <input type="text" name="autocomplete" placeholder="Enter something" ng-model="searchTerm" focused="focused" selected_item="selected_item"/>
+    </as-autocomplete>
+  </div>
+</body>
+<script src="../../../../../../angular/angular.js"></script>
+<script src="autocomplete.js"></script>
+</html>
