@@ -7,6 +7,17 @@
   <script src="../lib/assets/javascripts/components/services/key_codes.js"></script>
   <script src="../lib/assets/javascripts/components/services/offset.js"></script>
   <script src="../lib/assets/javascripts/components/directives/autocomplete.js"></script>
+  <script type="text/javascript">
+    angular.module('Components').service('JetRadarPlacesFetcher', ['$http', function($http){
+      return {
+        get: function(iata, success_callback){
+          $http.get('http://www.jetradar.com/autocomplete/places?q=' + iata)
+            .success(success_callback);
+        }
+      }
+    }]);
+
+  </script>
 </head>
 <body ng-app="Components">
   <style type="text/css">
@@ -22,7 +33,7 @@
     }
   </style>
   <div style="position: fixed; top: 200px; left: 300px;">
-    <as-autocomplete min-length="3" displayed-attr="title">
+    <as-autocomplete min-length="3" displayed-attr="title" fetcher="JetRadarPlacesFetcher">
       <ul class="as_autocomplete_results" ng-class="{on: show_list && results}">
         <li ng-repeat="result in results" ng-click="result_selected(result)" ng-mouseenter="result_hovered(result)" ng-class="{highlight: is_hovered(result)}">
           {{result.name}} {{result.city_name}}
