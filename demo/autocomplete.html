@@ -23,11 +23,14 @@
           {{result.name}} {{result.city_name}}
         </li>
       </ul>
-      <input type="text" placeholder="Origin" ng-model="searchTerm" ng-value="selected_result.label" focused="focused"/>
+      <input type="text" placeholder="Origin" ng-model="searchTerm" ng-value="selected_result.label"/>
       <input type="text" ng-model="selected_result.code" disabled="true"/>
     </as-autocomplete>
   </div>
 </body>
-<script src="../../../../../../angular/angular.js"></script>
-<script src="autocomplete.js"></script>
+
+<script src="../../angular/angular.js"></script>
+<script src="../lib/assets/javascripts/components/app.js"></script>
+<script src="../lib/assets/javascripts/components/services/key_codes.js"></script>
+<script src="../lib/assets/javascripts/components/directives/autocomplete.js"></script>
 </html>
