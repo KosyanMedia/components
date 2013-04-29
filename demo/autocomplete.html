@@ -11,8 +11,9 @@
     angular.module('Components').service('JetRadarPlacesFetcher', ['$http', function($http){
       return {
         get: function(iata, success_callback){
-          $http.get('http://www.jetradar.com/autocomplete/places?q=' + iata)
-            .success(success_callback);
+          success_callback([{name: 'BKK', code: 'BKK', label: 'Suvarnabhumi', city_name: 'Bangkok'}, {name: 'MOW', code: 'MOW', label: 'Moscow', city_name: 'Moscow'}]);
+//          $http.get('http://www.jetradar.com/autocomplete/places?q=' + iata)
+//            .success(success_callback);
         }
       }
     }]);
@@ -33,14 +34,14 @@
     }
   </style>
   <div style="position: fixed; top: 200px; left: 300px;">
-    <as-autocomplete min-length="3" displayed-attr="title" fetcher="JetRadarPlacesFetcher">
-      <ul class="as_autocomplete_results" ng-class="{on: show_list && results}">
-        <li ng-repeat="result in results" ng-click="result_selected(result)" ng-mouseenter="result_hovered(result)" ng-class="{highlight: is_hovered(result)}">
-          {{result.name}} {{result.city_name}}
-        </li>
-      </ul>
-      <input type="text" placeholder="Origin" ng-model="searchTerm" ng-value="selected_result.label"/>
-      <input type="text" ng-model="selected_result.code" disabled="true"/>
+    <as-autocomplete min-length="3" fetcher="JetRadarPlacesFetcher">
+      <as-autocomplete-item>
+        {{item.name}} {{item.city_name}}
+      </as-autocomplete-item>
+      <as-autocomplete-input>
+        <input type="text" placeholder="Origin" ng-model="search.city_name"/>
+        <input type="text" ng-model="search.code" disabled="true"/>
+      </as-autocomplete-input>
     </as-autocomplete>
   </div>
 </body>
