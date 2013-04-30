@@ -11,16 +11,13 @@
     angular.module('Components').service('JetRadarPlacesFetcher', ['$http', function($http){
       return {
         get: function(iata, success_callback){
-          success_callback([{name: 'BKK', code: 'BKK', label: 'Suvarnabhumi', city_name: 'Bangkok'}, {name: 'MOW', code: 'MOW', label: 'Moscow', city_name: 'Moscow'}]);
-//          $http.get('http://www.jetradar.com/autocomplete/places?q=' + iata)
-//            .success(success_callback);
+          $http.get('http://www.jetradar.com/autocomplete/places?q=' + iata)
+            .success(success_callback);
         }
       }
     }]);
 
   </script>
-</head>
-<body ng-app="Components">
   <style type="text/css">
     .as_autocomplete_results {
       position: fixed;
@@ -33,13 +30,15 @@
       background-color: dodgerblue;
     }
   </style>
+</head>
+<body ng-app="Components">
   <div style="position: fixed; top: 200px; left: 300px;">
     <as-autocomplete min-length="3" fetcher="JetRadarPlacesFetcher">
       <as-autocomplete-item>
         {{item.name}} {{item.city_name}}
       </as-autocomplete-item>
       <as-autocomplete-input>
-        <input type="text" placeholder="Origin" ng-model="search.city_name"/>
+        <input type="text" placeholder="Origin" ng-model="search.title"/>
         <input type="text" ng-model="search.code" disabled="true"/>
       </as-autocomplete-input>
     </as-autocomplete>
