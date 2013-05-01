@@ -1,0 +1,9 @@
+<as-autocomplete min-length="3" fetcher="JetRadarPlacesFetcher">
+  <as-autocomplete-item>
+    {{item.name}} {{item.city_name}}
+  </as-autocomplete-item>
+  <as-autocomplete-input>
+    <input type="text" placeholder="Origin" ng-model="search.title"/>
+    <input type="text" ng-model="search.code" disabled="true"/>
+  </as-autocomplete-input>
+</as-autocomplete>
