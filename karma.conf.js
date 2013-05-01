@@ -18,7 +18,13 @@ files = [
   'spec/javascripts/spec.js',
   'lib/assets/javascripts/components/services/*.js',
   'lib/assets/javascripts/components/directives/*.js',
-  'spec/javascripts/components/*_spec.*'
+  'spec/javascripts/components/*_spec.*',
+   {
+      pattern: 'spec/javascripts/fixtures/*.html',
+      watched: true,
+      included: false,
+      served: true
+    }
 ];
 
 
@@ -71,3 +77,4 @@ captureTimeout = 60000;
 // Continuous Integration mode
 // if true, it capture browsers, run tests and exit
 singleRun = false;
+
