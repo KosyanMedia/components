@@ -1,5 +1,8 @@
 require "components/version"
 
 module Components
-  # Your code goes here...
+  module Rails
+    class Engine < ::Rails::Engine
+    end
+  end
 end
