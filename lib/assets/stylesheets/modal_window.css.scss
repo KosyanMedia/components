@@ -1,0 +1,31 @@
+.modal_wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  display: none;
+  background: url(#);
+  background-color: rgba(0, 0, 0, 0.7);
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#bb000000, endColorstr=#bb000000);
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#bb000000, endColorstr=#bb000000)";
+  z-index: 1000;
+
+  .modal_window {
+    position: absolute;
+    .close_window {
+      position: absolute;
+      top: -13px;
+      right: -13px;
+      z-index: 10;
+      cursor: pointer;
+      width: 26px;
+      height: 26px;
+      background-image: image-url('icons/close_dark.png');
+      &:hover {
+        background-image: image-url('icons/close_bright.png');
+      }
+    }
+  }
+}
