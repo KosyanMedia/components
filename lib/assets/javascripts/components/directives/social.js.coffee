@@ -12,7 +12,7 @@ angular.module('Components').
     vkontakte: (title, url, message, image) ->
       @_share('http://vkontakte.ru/share.php?noparse=true&' +
         "url=#{encodeURIComponent url}&" +
-        "title=#{encodeURIComponent message}&" +
+        "title=#{encodeURIComponent title}&" +
         "description=#{encodeURIComponent message}&" +
         "image=#{encodeURIComponent image}"
       )
