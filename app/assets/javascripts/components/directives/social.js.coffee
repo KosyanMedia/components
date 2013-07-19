@@ -8,7 +8,7 @@ angular.module('Components').
         "p[images][0]=#{encodeURIComponent image}"
       )
     twitter: (title, url, message, image) ->
-      @_share("http://twitter.com/intent/tweet?text=#{encodeURIComponent message}&url=#{encodeURIComponent url}")
+      @_share("http://twitter.com/intent/tweet?text=#{encodeURIComponent(title + ' ' + message)}&url=#{encodeURIComponent url}")
     vkontakte: (title, url, message, image) ->
       @_share('http://vkontakte.ru/share.php?noparse=true&' +
         "url=#{encodeURIComponent url}&" +
