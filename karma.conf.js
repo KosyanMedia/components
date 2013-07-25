@@ -14,10 +14,10 @@ files = [
   'spec/javascripts/support/angular-mocks.js',
   'spec/javascripts/support/jquery-1.8.2.min.js',
   'spec/javascripts/support/jasmine-jquery.js',
-  'lib/assets/javascripts/components/app.js',
+  'app/assets/javascripts/components/app.js',
   'spec/javascripts/spec.js',
-  'lib/assets/javascripts/components/services/*.js',
-  'lib/assets/javascripts/components/directives/*.js',
+  'app/assets/javascripts/components/services/*.js',
+  'app/assets/javascripts/components/directives/*.js',
   'spec/javascripts/components/*_spec.*',
    {
       pattern: 'spec/javascripts/fixtures/*.html',
@@ -67,7 +67,7 @@ autoWatch = true;
 // - Safari (only Mac)
 // - PhantomJS
 // - IE (only Windows)
-browsers = ['Chrome'];
+browsers = ['Safari'];
 
 
 // If browser does not capture in given timeout [ms], kill it

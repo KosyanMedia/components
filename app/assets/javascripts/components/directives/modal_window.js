@@ -64,8 +64,7 @@ angular.module('Components').directive('asModal',
             });
           }
 
-          $http.get(attributes.asSrc, {cache: $templateCache}).success(function(response){
-          }).then(function(response){
+          $http.get(attributes.asSrc, {cache: $templateCache}).then(function(response){
             modal_window.append(response.data);
             modal_window.append(closer);
             modal_window = $compile(modal_window)(scope);
