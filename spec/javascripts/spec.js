@@ -6,10 +6,10 @@
 // IT IS UNLIKELY THAT YOU WILL NEED TO CHANGE THIS FILE
 //
 //= require angular
-//= require application
 //= require angular-mocks
-//= require_tree ./
 //= require jquery
+//= require_tree ./
+
 
 angular.module('Components').
   constant('Preferences', {
