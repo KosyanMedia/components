@@ -33,7 +33,7 @@ Require in your project necessary widgets and Components module.
 ### Run karma
 
   ```bash
-  $ karma start karma.conf.js
+  $ karma start config/karma.conf.js
   ```
 
 ## Contributing
