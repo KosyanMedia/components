@@ -20,5 +20,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'jquery-rails'
   spec.add_development_dependency 'jasminerice'
   spec.add_development_dependency 'sass-rails'
-  spec.add_development_dependency 'compass-rails'
+  spec.add_development_dependency "bourbon"
 end
