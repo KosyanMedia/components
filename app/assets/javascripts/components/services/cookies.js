@@ -1,4 +1,4 @@
-angular.module('Components').service('Cookies', function(){ 
+angular.module('Components').service('Cookies', function(){
   var repl_re = _.memoize(function(key){
     return new RegExp("(?:^|.*;\\s*)" +
       escape(key).replace(/[\-\.\+\*]/g, "\\$&") +
@@ -29,8 +29,8 @@ angular.module('Components').service('Cookies', function(){
           case "string": expires = "; expires=" + end; break;
           case "object": if(end.hasOwnProperty("toGMTString")){
               expires = "; expires=" + end.toGMTString();
-          }
-          break;
+          } break;
+          default: expires = "; expires=" + 'Wed, 10 Jul 2099 13:05:42 GMT'; break;
         }
       }
       document.cookie = escape(key) + "=" + escape(value) + expires +
