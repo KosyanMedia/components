@@ -25,12 +25,21 @@ angular.module('Components').service('Cookies', function(){
       var expires = "";
       if(end){
         switch (typeof end) {
-          case "number": expires = "; max-age=" + end; break;
-          case "string": expires = "; expires=" + end; break;
-          case "object": if(end.hasOwnProperty("toGMTString")){
+          case "number":
+            expires = "; max-age=" + end;
+            break;
+          case "string":
+            if(end == 'unlimited'){
+              expires = "; expires=" + 'Fri, 10 Jul 2099 13:05:42 GMT';
+            } else {
+              expires = "; expires=" + end;
+            }
+            break;
+          case "object":
+            if(end.hasOwnProperty("toGMTString")){
               expires = "; expires=" + end.toGMTString();
-          } break;
-          default: expires = "; expires=" + 'Wed, 10 Jul 2099 13:05:42 GMT'; break;
+            };
+            break;
         }
       }
       document.cookie = escape(key) + "=" + escape(value) + expires +

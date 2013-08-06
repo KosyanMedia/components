@@ -22,19 +22,7 @@ Require in your project necessary widgets and Components module.
 
 ## Testing
 
-### Installing dependency
-
-  ```bash
-  brew install npm
-  npm install -g karma
-  npm install -g execSync
-  bundle
-  ```
-### Run karma
-
-  ```bash
-  $ karma start config/karma.conf.js
-  ```
+    $ karma start karma.conf.js
 
 ## Contributing
 

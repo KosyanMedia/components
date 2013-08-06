@@ -45,10 +45,6 @@ angular.module('Components').directive('asAutocomplete',
         $scope.last_search = new_value;
       }, true);
 
-      $timeout(function(){
-        $scope.$apply('last_search=initial_value');
-      }, 100);
-
       this.sync_with_model = function(new_value){
         $scope.acModel = new_value;
       };
@@ -65,10 +61,20 @@ angular.module('Components').directive('asAutocomplete',
       this.set_input = function(input){
         $scope.input = input;
 
-        input.bind('input', function(){
+        var refresh_results = function(){
           $scope.results = [];
           term_changed(input.val());
-        });
+        };
+
+        input.bind('input', refresh_results);
+
+        var userAgent = navigator.userAgent.toLowerCase(),
+            ie_re = /.*(?:rv|ie)[\/: ](.+?)([ \);]|$)/;
+
+        if (/msie/.test(userAgent) && parseFloat((userAgent.match(ie_re) || [])[1]) < 9) {
+          input.bind('keyup', refresh_results);
+        }
+
       };
     }]
   }
@@ -132,11 +138,7 @@ angular.module('Components').directive('asAutocompleteItem', ['$timeout', 'Offse
             $scope.$apply('show_list = true');
           })
           .bind('blur', function(){
-            $timeout(function(){
-              $scope.$apply('show_list = false');
-              $scope.$apply('hovered_index = -1');
-              $scope.prev_selected_item = $scope.selected_item;
-            }, 200);
+            $scope.close()
           })
           .bind("keydown", function(event){
             switch(KeyCodes.get(event.keyCode)){
@@ -158,11 +160,20 @@ angular.module('Components').directive('asAutocompleteItem', ['$timeout', 'Offse
               $scope.$apply(function(scope){ scope.item_selected() });
               break;
             case 'ESCAPE':
-              $scope.$apply('show_list = false');
+              $scope.close();
               break;
             }
           });
       };
+
+      $scope.close = function(){
+        $timeout(function(){
+          $scope.$apply('show_list = false');
+          $scope.$apply('items = {}');
+          $scope.$apply('hovered_index = -1');
+          $scope.prev_selected_item = $scope.selected_item;
+        }, 150);
+     };
 
       $scope.change_hovered = function(direction){
         if(!$scope.items){return;}
@@ -178,6 +189,7 @@ angular.module('Components').directive('asAutocompleteItem', ['$timeout', 'Offse
       };
 
       $scope.item_selected = function(){
+        if(angular.isUndefined($scope.items)) return;
         $scope.selected_item = $scope.items[Math.max(0, $scope.hovered_index)];
         $scope.show_list = false;
       };
