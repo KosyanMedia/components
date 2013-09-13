@@ -45,10 +45,16 @@ angular.module('Components').service('TinyDB', ['LocalStorage', function(LocalSt
     get: function(key, limit){
       var table = LocalStorage.get(key);
       if(!table){
-        console.error('Table ' + key + ' does not exist');
         return false;
       }
-      return table.slice(table.length - limit);
+      var delta = table.length - limit;
+      try {
+        return delta < 0 ? table : table.slice(delta);
+      }
+      catch (error) {
+        return [];
+      }
+
     },
     drop: function(key){
       LocalStorage.set(key, []);

@@ -51,6 +51,15 @@ describe('Service: TinyDB', function(){
         {item: 'test4'}
       ]);
     });
+
+    it('correctly gets when limit less than table length', function(){
+      expect(tiny_db.get('fake_table', 6)).toEqual([
+        {item: 'test1'},
+        {item: 'test2'},
+        {item: 'test3'},
+        {item: 'test4'}
+      ]);
+    });
   });
 
   afterEach(function(){

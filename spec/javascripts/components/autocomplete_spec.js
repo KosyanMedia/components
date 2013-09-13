@@ -68,8 +68,13 @@ describe('Directive: as-autocomplete', function () {
       content.find('#title').trigger('input');
       var inner_scope = content.find('#title').scope();
 
-      expect(inner_scope.items.length).toBe(4);
-      expect(inner_scope.show_list).toBe(true);
+      waitsFor(function(){
+        return inner_scope.items && !!inner_scope.items.length;
+      });
+      runs(function(){
+        expect(inner_scope.items.length).toBe(4);
+        expect(inner_scope.show_list).toBe(true);
+      });
     });
 
     it('filters using fetcher', function() {
@@ -77,7 +82,12 @@ describe('Directive: as-autocomplete', function () {
       content.find('#title').trigger('input');
       var inner_scope = content.find('#title').scope();
 
-      expect(inner_scope.items.length).toBe(1);
+      waitsFor(function(){
+        return inner_scope.items && !!inner_scope.items.length;
+      });
+      runs(function(){
+        expect(inner_scope.items.length).toBe(1);
+      });
     });
 
     it('inserts value from suggest list', function() {
@@ -85,12 +95,18 @@ describe('Directive: as-autocomplete', function () {
       content.find('#title').trigger('input');
       var inner_scope = content.find('#title').scope();
 
-      inner_scope.hovered_index = 1;
-      inner_scope.item_selected();
-      scope.$digest();
+      waitsFor(function(){
+        return inner_scope.items && !!inner_scope.items.length;
+      });
+      runs(function(){
+        inner_scope.hovered_index = 1;
+        inner_scope.item_selected();
+        scope.$apply();
 
-      expect(content.find('#title').val()).toBe('Heathrow');
-      expect(content.find('#code').val()).toBe('LHR');
+        expect(content.find('#title').val()).toBe('Heathrow');
+        expect(content.find('#code').val()).toBe('LHR');
+      });
+
     });
   });
 });

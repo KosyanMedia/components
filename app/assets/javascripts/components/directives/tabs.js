@@ -1,7 +1,7 @@
 angular.module('Components').
   directive('tabs', function() {
     return {
-      restrict: 'E',
+      restrict: 'EA',
       transclude: true,
       scope: {},
       controller: ['$scope', '$element', function($scope, $element) {

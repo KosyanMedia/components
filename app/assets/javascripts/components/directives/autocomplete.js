@@ -42,11 +42,11 @@ angular.module('Components').directive('asAutocomplete',
 
       $scope.$watch('acModel', function(new_value, old_value){
         if(!new_value){return;}
-        $scope.last_search = new_value;
+        $scope.last_search = angular.copy(new_value);
       }, true);
 
       this.sync_with_model = function(new_value){
-        $scope.acModel = new_value;
+        $scope.acModel = angular.copy(new_value);
       };
 
       this.set_items = function(items_scope){
@@ -61,10 +61,10 @@ angular.module('Components').directive('asAutocomplete',
       this.set_input = function(input){
         $scope.input = input;
 
-        var refresh_results = function(){
+        var refresh_results = _.debounce(function(){
           $scope.results = [];
           term_changed(input.val());
-        };
+        }, 200);
 
         input.bind('input', refresh_results);
 
@@ -87,7 +87,7 @@ angular.module('Components').directive('asAutocompleteItem', ['$timeout', 'Offse
     transclude: true,
     replace: true,
     template:
-      '<ul ng-style="suggest_style" class="as_autocomplete_results" ng-class="{on: show_list && items}">' +
+      '<ul ng-style="suggest_style" class="as_autocomplete_results autocomplete-suggestions" ng-class="{on: show_list && items}">' +
         '<li ng-repeat="item in items" ng-click="item_selected()" ng-mouseenter="item_hovered(item)" ng-class="{highlight: is_hovered(item)}">' +
           '<div ng-transclude></div>' +
         '</li>' +
@@ -130,9 +130,10 @@ angular.module('Components').directive('asAutocompleteItem', ['$timeout', 'Offse
         });
 
         input
-          .bind('input', function(){
+          .bind('input', _.debounce(function(){
+            Offset.dock_to(input[0], $element);
             $scope.$apply('hovered_index = -1');
-          })
+          }, 200))
           .bind('focus', function(){
             Offset.dock_to(input[0], $element);
             $scope.$apply('show_list = true');
@@ -166,14 +167,14 @@ angular.module('Components').directive('asAutocompleteItem', ['$timeout', 'Offse
           });
       };
 
-      $scope.close = function(){
-        $timeout(function(){
-          $scope.$apply('show_list = false');
-          $scope.$apply('items = {}');
-          $scope.$apply('hovered_index = -1');
+      $scope.close = _.debounce(function(){
+        $scope.$apply(function(){
+          $scope.show_list = false;
+          $scope.items = {};
+          $scope.hovered_index = -1;
           $scope.prev_selected_item = $scope.selected_item;
-        }, 150);
-     };
+        });
+      }, 200);
 
       $scope.change_hovered = function(direction){
         if(!$scope.items){return;}
@@ -210,9 +211,10 @@ angular.module('Components').directive('asAutocompleteInput', [function(){
       var input = iElement.children('input');
       asAutocompleteCtrl.set_input(input);
 
-      scope.$watch('search', function(new_value, old_value){
+      scope.$watch('search', _.debounce(function(new_value, old_value){
         asAutocompleteCtrl.sync_with_model(new_value);
-      }, true);
+        scope.$apply();
+      }, 200), true);
 
       asAutocompleteCtrl.scope.$watch('last_search', function(last_search){
         scope.search = angular.copy(last_search);

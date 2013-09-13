@@ -19,7 +19,7 @@ describe('Directive: as-modal', function(){
   describe('compile', function(){
     var modal_window, scope, content;
     beforeEach(function(){
-      modal_window = angular.element("<div as-modal as-src='test.html' ng-show='show'></div>");
+      modal_window = angular.element("<div as-modal as-src='test.html' as-show='show'></div>");
       scope = $rootScope.$new();
       content = $compile(modal_window)(scope);
       body.append(content);
@@ -50,8 +50,8 @@ describe('Directive: as-modal', function(){
       expect(content.html()).toMatch(/.*<div.*class=".*close_window.*".*><\/div>.*/);
     });
   });
-  it('doesnt show close button if closable attribute set to false', function(){
-    var modal_window = angular.element("<div as-modal as-src='test.html' closable='false' ng-show='show'></div>");
+  it('does NOT show close button if closable attribute set to false', function(){
+    var modal_window = angular.element("<div as-modal as-src='test.html' closable='false' as-show='show'></div>");
     var scope = $rootScope.$new();
     var content = $compile(modal_window)(scope);
     body.append(content);

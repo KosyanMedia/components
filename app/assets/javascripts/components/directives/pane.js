@@ -2,7 +2,7 @@ angular.module('Components').
   directive('pane', [function() {
     return {
       require: '^tabs',
-      restrict: 'E',
+      restrict: 'EA',
       transclude: true,
       scope: { title: '@' },
       link: function(scope, element, attrs, tabsCtrl) {
