@@ -50,7 +50,7 @@ angular.module('Components').service('Offset', [function(){
       var dock_offset = this.get_offset(dock);
       elem.css({
         left: dock_offset.left + 'px',
-        top: dock_offset.top + dock_offset.height + 'px'
+        top: dock_offset.top + 35 + 'px'
       });
     }
   };

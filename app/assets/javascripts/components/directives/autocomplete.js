@@ -6,7 +6,7 @@ angular.module('Components').directive('asAutocomplete',
       minLength: '@',
       acModel: '=acModel'
     },
-    transclude: true,
+    transclude: 'element',
     template: '<div ng-transclude>',
     replace: true,
     controller: ['$scope', '$element', '$timeout', '$attrs', function($scope, $element, $timeout, $attrs){
@@ -88,7 +88,7 @@ angular.module('Components').directive('asAutocompleteItem', ['$timeout', 'Offse
     replace: true,
     template:
       '<ul ng-style="suggest_style" class="as_autocomplete_results autocomplete-suggestions" ng-class="{on: show_list && items}">' +
-        '<li ng-repeat="item in items" ng-click="item_selected()" ng-mouseenter="item_hovered(item)" ng-class="{highlight: is_hovered(item)}">' +
+        '<li ng-repeat="item in items" ng-click="item_selected()" ng-mouseenter="item_hovered(item)" ng-class="{highlight: is_hovered(item), group_label: is_group_label(item)}">' +
           '<div ng-transclude></div>' +
         '</li>' +
       '</ul>',
@@ -100,7 +100,7 @@ angular.module('Components').directive('asAutocompleteItem', ['$timeout', 'Offse
       asAutocompleteCtrl.scope.$watch('results', function(items){ scope.items = items; });
       asAutocompleteCtrl.scope.$watch('show_list', function(show_list){ scope.show_list = show_list });
     },
-    controller: ['$scope', '$element', function($scope, $element){
+    controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs){
       var
         directions = {
           next: function(){
@@ -112,6 +112,12 @@ angular.module('Components').directive('asAutocompleteItem', ['$timeout', 'Offse
             if(0 > $scope.hovered_index){ $scope.hovered_index = $scope.items.length - 1}
           }
         };
+
+			$scope.is_group_label = function(item){
+				return angular.isDefined(item) &&
+					angular.isDefined($attrs.asAutocompleteItemGroup) &&
+					!!item[$attrs.asAutocompleteItemGroup];
+			};
 
       $scope.hovered_index = -1;
       $scope.show_list = true;
@@ -139,7 +145,7 @@ angular.module('Components').directive('asAutocompleteItem', ['$timeout', 'Offse
             $scope.$apply('show_list = true');
           })
           .bind('blur', function(){
-            $scope.close()
+            $scope.close(_.first($scope.items));
           })
           .bind("keydown", function(event){
             switch(KeyCodes.get(event.keyCode)){
@@ -167,12 +173,18 @@ angular.module('Components').directive('asAutocompleteItem', ['$timeout', 'Offse
           });
       };
 
-      $scope.close = _.debounce(function(){
+      $scope.close = _.debounce(function(item){
+				if($scope.is_group_label(item)){
+					return;
+				}
         $scope.$apply(function(){
           $scope.show_list = false;
           $scope.items = {};
           $scope.hovered_index = -1;
           $scope.prev_selected_item = $scope.selected_item;
+          if(item){
+            $scope.selected_item = item;
+          }
         });
       }, 200);
 
@@ -182,17 +194,26 @@ angular.module('Components').directive('asAutocompleteItem', ['$timeout', 'Offse
       };
 
       $scope.is_hovered = function(item){
-        return $scope.items.indexOf(item) === $scope.hovered_index;
+        return ($scope.items.indexOf(item) === $scope.hovered_index) && !$scope.is_group_label(item);
       };
 
       $scope.item_hovered = function(item){
+				if($scope.is_group_label(item)){
+					$scope.hovered_index = -1;
+					return;
+				}
         $scope.hovered_index = $scope.items.indexOf(item);
       };
 
       $scope.item_selected = function(){
         if(angular.isUndefined($scope.items)) return;
-        $scope.selected_item = $scope.items[Math.max(0, $scope.hovered_index)];
+				var current_item = $scope.items[Math.max(0, $scope.hovered_index)];
+				if($scope.is_group_label(current_item)){
+					return;
+				}
+        $scope.selected_item = current_item;
         $scope.show_list = false;
+				$scope.close();
       };
 
       $scope.reject_current_input = function(){

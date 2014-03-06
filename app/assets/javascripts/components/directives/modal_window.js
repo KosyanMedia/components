@@ -9,50 +9,33 @@ angular.module('Components').directive('asModal',
           inner_scope = scope.$new(),
           click_in_window = false,
 
-          body = angular.element(document.body),
           modal_wrapper = angular.element("<div/>")
             .addClass(controller.options.modal_wrapper_class)
-            .addClass('animate-if')
+            .addClass('animate-show')
             .attr('ng-show', attributes.asShow)
             .attr('ng-click', 'click_beyond()'),
           modal_window = angular.element("<div/>")
             .addClass(controller.options.modal_window_class)
-            .attr('ng-style', 'modal_window_offset()')
             .attr('ng-click', 'window_click()'),
           modal_closer = angular.element("<div/>")
-            .addClass("close_window")
+            .addClass("close_modal_window")
             .attr('ng-show', controller.options.closable)
             .attr('ng-click', 'close_window()'),
 
           force_close_window = function(){
             scope.$eval(attributes.asShow + ' = false');
-          };
+					},
 
+					set_window_offset = function(){
+						var window_height = window.innerHeight || document.documentElement.clientHeight,
+							children_height = modal_window.height(),
+							top_offset = parseInt((window_height - children_height) / 2, 10);
 
-          inner_scope.modal_window_offset = function(){
+						top_offset = top_offset < 20 ? 20 : top_offset;
+						modal_window.css('top', top_offset + 'px');
+					};
 
-            //TODO: it calls too many times. optimize it
-
-            var mw = element.find('.' + controller.options.modal_window_class)[0];
-
-            var window_width = window.innerWidth || document.documentElement.clientWidth,
-              window_height = window.innerHeight || document.documentElement.clientHeight;
-
-            var children_height = mw.clientHeight;
-            var children_width = mw.clientWidth;
-
-            var left_offset = parseInt((window_width - children_width) / 2, 10),
-              top_offset = parseInt((window_height - children_height) / 2, 10);
-
-            top_offset = top_offset < 20 ? 20 : top_offset;
-
-            return {
-              left: left_offset,
-              top: top_offset
-            };
-          };
-
-          inner_scope.close_window = function(){
+					inner_scope.close_window = function(){
             force_close_window();
           };
 
@@ -69,23 +52,25 @@ angular.module('Components').directive('asModal',
 
           inner_scope.$watch(attributes.asShow, function(new_value){
             if(new_value){
+							$(window).on('resize', set_window_offset);
               angular.element('html').addClass('scroll-forbidden');
               $timeout(function(){
                 $(window).resize();
-              }, 300);
+              }, 10);
             } else {
+							$(window).off('resize', set_window_offset);
               angular.element('html').removeClass('scroll-forbidden');
             }
           });
 
           controller.compile_window = function(){
 
-            $http.get(attributes.asSrc, {cache: $templateCache}).then(function(response){
-              modal_wrapper.append(modal_window);
-              modal_window.append(response.data);
-              modal_window.append(modal_closer);
-              element.append($compile(modal_wrapper)(inner_scope));
-            });
+						var cached_template = $templateCache.get(attributes.asSrc);
+
+						modal_wrapper.append(modal_window);
+						modal_window.append(cached_template);
+						modal_window.append(modal_closer);
+						element.append($compile(modal_wrapper)(inner_scope));
 
             controller.compile_window = function(){
               return;

@@ -30,7 +30,7 @@ angular.module('Components').service('Cookies', function(){
             break;
           case "string":
             if(end == 'unlimited'){
-              expires = "; expires=" + 'Fri, 10 Jul 2099 13:05:42 GMT';
+              expires = "; expires=" + 'Fri, 10 Jul 2099 13:05:42 UTC';
             } else {
               expires = "; expires=" + end;
             }

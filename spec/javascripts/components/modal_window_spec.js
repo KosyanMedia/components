@@ -1,5 +1,5 @@
 describe('Directive: as-modal', function(){
-  var $httpBackend, $compile, $rootScope;
+  var $compile, $rootScope, $templateCache;
 
   var body = angular.element(document.body);
 
@@ -7,13 +7,12 @@ describe('Directive: as-modal', function(){
 
   beforeEach(inject(function ($injector) {
     $rootScope = $injector.get('$rootScope');
-    $httpBackend = $injector.get('$httpBackend');
     $compile = $injector.get('$compile');
+		$templateCache = $injector.get('$templateCache');
   }));
 
   beforeEach(function(){
-    $httpBackend.when('GET', 'test.html').respond('<i>response</i>');
-    $httpBackend.expectGET('test.html');
+		$templateCache.put('test.html', '<i>response</i>');
   });
 
   describe('compile', function(){
@@ -33,21 +32,18 @@ describe('Directive: as-modal', function(){
       expect(content.html()).toEqual('');
       scope.show = true;
       scope.$digest();
-      $httpBackend.flush();
       expect(content.html()).toContain('response');
     });
 
     it('compiles correctly', function(){
       scope.show = true;
       scope.$digest();
-      $httpBackend.flush();
       expect(content[0].outerHTML).toMatch(/<div.*class=".*modal_wrapper.*".*><div.*class=".*modal_window.*">.*<\/div><\/div>/);
     });
     it('appends close button by default', function(){
       scope.show = true;
       scope.$digest();
-      $httpBackend.flush();
-      expect(content.html()).toMatch(/.*<div.*class=".*close_window.*".*><\/div>.*/);
+      expect(content.html()).toMatch(/.*<div.*class=".*close_modal_window.*".*><\/div>.*/);
     });
   });
   it('does NOT show close button if closable attribute set to false', function(){
@@ -57,7 +53,6 @@ describe('Directive: as-modal', function(){
     body.append(content);
     scope.show = true;
     scope.$digest();
-    $httpBackend.flush();
-    expect(content.html()).toMatch(/.*<div.*class=".*close_window.*".*ng-show="false".*><\/div>.*/);
+    expect(content.html()).toMatch(/.*<div.*class=".*close_modal_window.*".*ng-show="false".*><\/div>.*/);
   });
 });
