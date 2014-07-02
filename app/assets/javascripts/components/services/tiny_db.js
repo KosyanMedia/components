@@ -45,11 +45,12 @@ angular.module('Components').service('TinyDB', ['LocalStorage', function(LocalSt
     get: function(key, limit){
       var table = LocalStorage.get(key);
       if(!table){
-        return false;
+        return [];
       }
-      var delta = table.length - limit;
       try {
-        return delta < 0 ? table : table.slice(delta);
+        var possible_limits = (function(a,b){while(a--){b[a]=a+1}return b})(table.length,[]),
+            delta = table.length - (limit || 0);
+        return possible_limits.indexOf(limit) == -1 ? table : table.slice(delta);
       }
       catch (error) {
         return [];
@@ -61,3 +62,4 @@ angular.module('Components').service('TinyDB', ['LocalStorage', function(LocalSt
     }
   };
 }]);
+

@@ -30,7 +30,7 @@ angular.module('Components').service('Cookies', function(){
             break;
           case "string":
             if(end == 'unlimited'){
-              expires = "; expires=" + 'Fri, 10 Jul 2099 13:05:42 UTC';
+              expires = "; expires=" + 'Fri, 10 Jul 2038 13:05:42 UTC';
             } else {
               expires = "; expires=" + end;
             }
@@ -68,3 +68,4 @@ angular.module('Components').service('Cookies', function(){
     }
   };
 });
+

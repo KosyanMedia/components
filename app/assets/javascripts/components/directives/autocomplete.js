@@ -10,22 +10,22 @@ angular.module('Components').directive('asAutocomplete',
     template: '<div ng-transclude>',
     replace: true,
     controller: ['$scope', '$element', '$timeout', '$attrs', function($scope, $element, $timeout, $attrs){
+      $scope.is_searching = false;
       var
         fetcher = $injector.get($attrs.fetcher),
-        is_searching = false,
 
         can_search = function(term){
           return term && term.length >= $scope.minLength;
         },
         process_data = function(data){
-          is_searching = false;
+          $scope.is_searching = false;
           $scope.show_list = true;
           $scope.results = data;
         },
         term_changed = function(term){
           $scope.show_list = false;
           if(!can_search(term)){ return; }
-          is_searching = true;
+          $scope.is_searching = true;
           fetcher.get(term, process_data);
         },
         is_empty = function(obj) {
@@ -113,11 +113,11 @@ angular.module('Components').directive('asAutocompleteItem', ['$timeout', 'Offse
           }
         };
 
-			$scope.is_group_label = function(item){
-				return angular.isDefined(item) &&
-					angular.isDefined($attrs.asAutocompleteItemGroup) &&
-					!!item[$attrs.asAutocompleteItemGroup];
-			};
+      $scope.is_group_label = function(item){
+        return angular.isDefined(item) &&
+          angular.isDefined($attrs.asAutocompleteItemGroup) &&
+          !!item[$attrs.asAutocompleteItemGroup];
+      };
 
       $scope.hovered_index = -1;
       $scope.show_list = true;
@@ -174,9 +174,9 @@ angular.module('Components').directive('asAutocompleteItem', ['$timeout', 'Offse
       };
 
       $scope.close = _.debounce(function(item){
-				if($scope.is_group_label(item)){
-					return;
-				}
+        if($scope.is_group_label(item)){
+          return;
+        }
         $scope.$apply(function(){
           $scope.show_list = false;
           $scope.items = {};
@@ -198,19 +198,19 @@ angular.module('Components').directive('asAutocompleteItem', ['$timeout', 'Offse
       };
 
       $scope.item_hovered = function(item){
-				if($scope.is_group_label(item)){
-					$scope.hovered_index = -1;
-					return;
-				}
+        if($scope.is_group_label(item)){
+          $scope.hovered_index = -1;
+          return;
+        }
         $scope.hovered_index = $scope.items.indexOf(item);
       };
 
       $scope.item_selected = function(){
         if(angular.isUndefined($scope.items)) return;
-				var current_item = $scope.items[Math.max(0, $scope.hovered_index)];
-				if($scope.is_group_label(current_item)){
-					return;
-				}
+        var current_item = $scope.items[Math.max(0, $scope.hovered_index)];
+        if($scope.is_group_label(current_item)){
+          return;
+        }
         $scope.selected_item = current_item;
         $scope.show_list = false;
 				$scope.close();
@@ -240,8 +240,13 @@ angular.module('Components').directive('asAutocompleteInput', [function(){
       asAutocompleteCtrl.scope.$watch('last_search', function(last_search){
         scope.search = angular.copy(last_search);
       });
+
+      scope.is_searching = function(){
+        return asAutocompleteCtrl.scope.is_searching;
+      };
     }
   }
 }]);
+
 
 
